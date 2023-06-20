@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>To-Do Web App</title>
+	<style>
+		body {
+			font-family: Arial;
+			
+			background-image: url('https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000');
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  background-size: 100% 100%;
+		}
+		h1 {
+			text-align: center;
+			color: #666666;
+		}
+		input[type=text] {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+			border: none;
+			border-bottom: 2px solid #666666;
+		}
+		input[type=submit] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		input[type=submit]:hover {
+			background-color: #45a049;
+		}
+		div {
+			border-radius: 5px;
+			background-color: #ffffff;
+			padding: 20px;
+		}
+	</style>
+</head>
+<body>
+
+<h1>To-Do Web App</h1>
+
+<div>
+  <form id="myForm">
+    <label for="task">Title:</label><br>
+    <input type="text" id="task" name="task"><br><br>
+    <label for="task">Description:</label><br>
+    <input type="text" id="task2" name="task"><br><br>
+    <input type="submit" value="Add Task">
+  </form>
+</div>
+
+<script>
+	var form = document.getElementById("myForm");
+	var taskInput = document.getElementById("task");
+	var description = document.getElementById("task2");
+	var pendingTasks = document.createElement("ul");
+	var completedTasks = document.createElement("ul");
+	var pendingTasksHeader = document.createElement("h2");
+	var completedTasksHeader = document.createElement("h2");
+
+	pendingTasksHeader.innerHTML = "Pending Tasks";
+	completedTasksHeader.innerHTML = "Completed Tasks";
+
+	document.body.appendChild(pendingTasksHeader);
+	document.body.appendChild(pendingTasks);
+	document.body.appendChild(completedTasksHeader);
+	document.body.appendChild(completedTasks);
+
+	form.addEventListener("submit", function(event) {
+	  event.preventDefault();
+	  var taskText = taskInput.value.trim();
+	  var taskText2 = description.value.trim();
+	  if (taskText.length > 0) {
+	    var taskItem = document.createElement("li");
+	    var taskCheckbox = document.createElement("input");
+	    taskCheckbox.type = "checkbox";
+	    taskCheckbox.addEventListener("change", function() {
+	      if (this.checked) {
+	        completedTasks.appendChild(this.parentElement);
+	      } else {
+	        pendingTasks.appendChild(this.parentElement);
+	      }
+	    });
+	    var taskSpan = document.createElement("span");
+
+	    taskSpan.innerHTML = "Title:"+taskText+" , "+" Description:"+taskText2;
+	    var taskDeleteButton = document.createElement("button");
+	    taskDeleteButton.innerHTML = "Delete";
+	    taskDeleteButton.addEventListener("click", function() {
+	      this.parentElement.remove();
+	    });
+	    var taskEditButton = document.createElement("button");
+	    taskEditButton.innerHTML = "Edit";
+	    taskEditButton.addEventListener("click", function() {
+	      var newText = prompt("Enter new text:", this.parentElement.querySelector("span").innerHTML);
+	      if (newText != null && newText.trim().length > 0) {
+	        this.parentElement.querySelector("span").innerHTML = newText.trim();
+	      }
+	    });
+	    taskItem.appendChild(taskCheckbox);
+	    taskItem.appendChild(taskSpan);
+	    taskItem.appendChild(taskDeleteButton);
+	    taskItem.appendChild(taskEditButton);
+	    pendingTasks.appendChild(taskItem);
+	  }
+	  form.reset();
+	  taskInput.focus();
+	});
+</script>
+
+</body>
+</html>
